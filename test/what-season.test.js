@@ -59,6 +59,9 @@ describe('What season', () => {
         });
 
         it.optional('returns proper value (month index)', () => {
+            const array = [1, 2, 3]
+            const [first, second] = array
+            
             const [
                 winter,
                 spring,
