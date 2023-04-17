@@ -15,31 +15,61 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 function transform(arr) {
 
-  throw new NotImplementedError('Not implemented');
+  // throw new NotImplementedError('Not implemented');
   // remove line with error and write your code here
   if (!Array.isArray(arr)){
     throw new Error("'arr' parameter must be an instance of the Array!")
   }
 
   let newArr = [];
-  newArr = arr.filter((element, i) => element !== '--discard-next' || arr[i-1] !== '--discard-next')
-  newArr = arr.filter((element, i) => element !== '--discard-prev' || arr[i+1] !== '--discard-prev')
- 
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === '--double-next') {
-      newArr = arr.splice(i, 1, arr[i+1])
+  newArr = arr.map((i) => i) 
+
+  for (let i = 0; i < newArr.length; i++) {
+    if (newArr[newArr.length-1] === '--discard-next'){
+      newArr.splice(newArr.length-1,1)
+    }
+    
+    if (newArr[i] === '--discard-next' && newArr[newArr.length-1] !== '--discard-next') {
+      newArr.splice(i, 2)
     }
   }
 
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === '--double-prev') {
-      newArr = arr.splice(i, 1, arr[i-1])
+
+  for (let i = 0; i < newArr.length; i++) {
+    if (newArr[0] === '--discard-prev'){
+      newArr.splice(newArr[0],1)
+    }
+    
+    if (newArr[i] === '--discard-prev' && newArr[0] !== '--discard-prev') {
+      newArr.splice(i-1, 2 )
     }
   }
+
+
+  for (let i = 0; i < newArr.length; i++) {
+    if (newArr[newArr.length-1] === '--double-next'){
+      newArr = newArr.splice(0, newArr.length-1)
+    }
+    
+    if (newArr[i] === '--double-next' && newArr[newArr.length-1] !== '--double-next' ) {
+      newArr.splice(i, 1, arr[i+1])
+    }
+  }
+  
+
+
+  for (let i = 0; i < newArr.length; i++) {
+    if (newArr[0] === '--double-prev'){
+      newArr = newArr.splice(1, newArr.length)
+    }
+    if (newArr[i] === '--double-prev' && newArr[0] !== '--double-prev') {
+      newArr.splice(i, 1, newArr[i-1])
+    }
+  }
+
   return newArr;
   
 }
-
 
 
 module.exports = {
